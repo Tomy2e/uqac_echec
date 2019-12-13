@@ -20,7 +20,7 @@ public aspect Journalisation {
 	
 	public Journalisation() {
 		try (PrintWriter pw = new PrintWriter(path)){
-			pw.close();
+			//pw.close();
 		} catch(FileNotFoundException e) {
 			Logger.getLogger("ca.uqac.jgnault.echec").log(Level.SEVERE, e.getMessage(), e);
 		}
