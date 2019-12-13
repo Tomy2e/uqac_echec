@@ -32,7 +32,7 @@ public aspect DeuxCases {
 					
 					// Il est bien sur sa case initiale, on autorise le mouvement
 					if(field == 1) {
-						return piece.Bouger(Joueur, incX, 1, PourVrai) &&
+						return piece.Bouger(Joueur, incX, 1, PourVrai) ||
 						piece.Bouger(Joueur, incX, 1, PourVrai);
 					}
 				} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
