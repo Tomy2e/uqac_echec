@@ -14,7 +14,12 @@ public aspect DeuxCases {
 		args(Joueur, incX, incY, PourVrai) &&
 		call(boolean Piece.Bouger(int, int, int, boolean));
 	
-		after(Piece piece, int Joueur, int incX, int incY, boolean PourVrai) returning (boolean value) : deuxcases(piece, Joueur, incX, incY, PourVrai) {
+		boolean around(Piece piece, int Joueur, int incX, int incY, boolean PourVrai): deuxcases(piece, Joueur, incX, incY, PourVrai) {
+			boolean value = proceed(piece, Joueur, incX, incY, PourVrai);
+			
+			if(value) {
+				return true;
+			}
 			
 			// Un pion avance de 2 cases
 			if(Joueur == 1 && !value && incY == 2 && piece instanceof Pion) {
@@ -27,12 +32,14 @@ public aspect DeuxCases {
 					
 					// Il est bien sur sa case initiale, on autorise le mouvement
 					if(field == 1) {
-						piece.Bouger(Joueur, incX, 1, PourVrai);
+						return piece.Bouger(Joueur, incX, 1, PourVrai) &&
 						piece.Bouger(Joueur, incX, 1, PourVrai);
 					}
 				} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 					Logger.getLogger("ca.uqac.jgnault.echec").log(Level.SEVERE, e.getMessage(), e);
 				}
-			}			
+			}
+			
+			return false;
 		}
 }
